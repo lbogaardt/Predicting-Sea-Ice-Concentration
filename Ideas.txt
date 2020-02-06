@@ -1,0 +1,26 @@
+To Do:
+ - add geographical space as gaussian random field (time can be a 4th dimension)
+ - Use the vector autoregressive model to predict multiple output simultaneously: temp, ohc, wind etc. or multilevel vector autoregressive model. Check of het toevoegen van temp als dep var de prediction voor sic verandert.
+ - Use separate models for predictions further in time, e.g. wind and current direction may influence ice in the next time period but not 2 periods forward. It also by-passes the need for VAR models.
+ - Use multilevel SEM (DSEM and use as example during Timeseries training and http://www.statmodel.com/TimeSeries.shtml)
+ - Predicted output should be correlated spatially to the same degree as the input. Don't predict as if independently.
+ - stable proces = mean-reverting = pixel-mean plays a role, particularly in the interaction with season.
+ - Add ridge regression in in-sample-cv (single-level)
+ - Can CV (e.g. ridge regression) bring multilevel models closer to the mean, reducing the DFs and increasing the generalisability?
+ - Use multi-level CV (e.g. ridge regression ) to 'pull' individuals closer to group mean (cost~diff(individual, group) as opposed to standard cost~diff(individual, 0))
+ - De-trend, but also check the trend is still gone after covariates are introduced. (similar to Simpson paradox and the question whether multi-level analysis makes sense after adding covariates which explain group differences).
+ - Or only include spatial structure in the cost function, in that the person-specific intercept and slopes must be similar for pixels close together. Bring them closer to each other using spatial-CV.
+ - Or it's placed in the covariance structure of the between-level error term.
+ - temp -> tempt-1
+
+Done:
+ - combine first and second order persistence: model first and 2nd derivative together in some linear combination > same as adding p(x,t-1) and p(x-2,t-2) as linear predictors
+ - or simply add p(x-2,t-1), p(x-1,t-1), p(x+1,t-1) and p(x+2,t-1) as predictors
+ - predictors: latitude and season and their interaction (pole is always ice) latitude interaction with all variables, including p(x, t-1), heteroscedasticity. Perhaps model independently
+ - logistics transformation applied to climate fields > summer always no ice, in winter more variance, in north always ice, lower more variance etc., again heteroscedasticity
+ - Add week number for seasonality, perhaps mapped via sun angle and add y value for latitude (sun, temp etc).
+ - Include mean, max, min and count(land) of surrounding x's.
+
+Remember:
+ - climate field, only past data, no multiple prediction for this model needed
+ - interaction of drift (= wind) with p(x-1,t-1) but only small effect, so not worth examining this
